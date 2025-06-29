@@ -1,17 +1,21 @@
 <?php
 
+use App\Http\Controllers\ContactController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ProductsController;
+use App\Http\Controllers\TourController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-});
+Route::get('/', [HomeController::class, 'index'])->name('main');
+
+Route::get('/tour', [TourController::class, 'index'])->name('tour');
+
+Route::get('/products', [ProductsController::class, 'index'])->name('products');
+
+Route::get('/contact', [ContactController::class, 'index'])->name('contact');
+
 
 Route::middleware([
     'auth:sanctum',
