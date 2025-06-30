@@ -94,11 +94,20 @@ const form = reactive({
   message: '',
 });
 
-const handleSubmit = () => {
-  alert(`Gracias por tu mensaje, ${form.name}!`);
-  // Aquí podrías enviar los datos a tu backend usando axios o fetch.
-  form.name = '';
-  form.email = '';
-  form.message = '';
+const handleSubmit = async () => {
+  try{
+    await axios.post('/api/contact', form);
+
+    alert(`Gracias por tu mensaje, ${form.name}!`);
+    // Aquí podrías enviar los datos a tu backend usando axios o fetch.
+    form.name = '';
+    form.email = '';
+    form.message = '';
+  } catch (error){
+    console.log(error);
+    alert('hubo un error al enviar el mensaje. Intenta de nuevo');
+  }
+  
+  
 };
 </script>

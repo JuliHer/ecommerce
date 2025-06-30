@@ -10,27 +10,11 @@
         </h2>
         <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             <!-- Producto 1 -->
-            <div class="rounded-3xl border-2 p-4">
-                <img src="https://picsum.photos/600/600" alt="Producto 1" class="w-full aspect-[1/1] object-cover rounded-2xl" />
-                <h3 class="text-lg font-semibold mt-4">Producto 1</h3>
-                <p class="text-gray-600">$25.00</p>
+            <div v-for="product in products" :key="product.id" class="rounded-3xl border-2 p-4">
+                <img :src="product.image || 'https://picsum.photos/600/600'" alt="Producto" class="w-full aspect-[1/1] object-cover rounded-2xl" />
+                <h3 class="text-lg font-semibold mt-4">{{ product.name }}</h3>
+                <p class="text-gray-600">{{ product.price }}</p>
                 <button class="mt-4 w-full rounded-2xl border-2 border-blue-500 text-blue-500 py-2 px-4 hover:text-white hover:bg-blue-700 transition">Comprar</button>
-            </div>
-
-            <!-- Producto 2 -->
-            <div class="bg-white rounded-lg shadow p-4">
-            <img src="https://picsum.photos/600/600?2" alt="Producto 2" class="w-full aspect-[1/1] object-cover rounded" />
-            <h3 class="text-lg font-semibold mt-4">Producto 2</h3>
-            <p class="text-gray-600">$30.00</p>
-            <button class="mt-4 bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition">Comprar</button>
-            </div>
-
-            <!-- Producto 3 -->
-            <div class="bg-white rounded-lg shadow p-4">
-            <img src="https://picsum.photos/600/600?3" alt="Producto 3" class="w-full aspect-[1/1] object-cover rounded" />
-            <h3 class="text-lg font-semibold mt-4">Producto 3</h3>
-            <p class="text-gray-600">$20.00</p>
-            <button class="mt-4 bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition">Comprar</button>
             </div>
 
             <!-- Puedes seguir agregando productos -->
@@ -48,6 +32,23 @@
 </template>
 
 <script setup>
+import { ref, onMounted } from 'vue';
+import axios from 'axios';
 import { Link } from '@inertiajs/vue3';
 import NavigationTop from '@/Components/NavigationTop.vue';
+const products = ref([]);
+
+const fetchProducts = async () => {
+  try {
+    const response = await axios.get('/api/products');
+    products.value = response.data;
+  } catch (error) {
+    console.error('Error al cargar productos: ', error);
+  }
+}
+
+onMounted(() => {
+  fetchProducts();
+});
+
 </script>

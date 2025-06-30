@@ -14,57 +14,31 @@
             Novedades
           </h2>
           <div class="space-y-8">
-  <!-- Card 1 -->
-  <div class="bg-white rounded-lg shadow hover:shadow-lg transition overflow-hidden flex flex-col md:flex-row">
-    <img
-      src="https://picsum.photos/600/400?1"
-      alt="Imagen del blog"
-      class="w-full md:w-1/3 h-60 md:h-auto object-cover object-center"
-    />
-    <div class="p-6 flex flex-col justify-between">
-      <div>
-        <h3 class="text-2xl font-bold text-gray-800 mb-2">
-          Próximo evento: Jules Live Tour 2025
-        </h3>
-        <p class="text-gray-600 mb-4">
-          Acompáñanos en la gira oficial, descubre fechas y lugares para nuestros próximos conciertos.
-        </p>
-      </div>
-      <a
-        href="/blog/proximo-tour"
-        class="inline-block text-blue-600 hover:text-blue-800 font-semibold mt-2"
-      >
-        Leer más →
-      </a>
-    </div>
-  </div>
-
-  <!-- Card 2 -->
-  <div class="bg-white rounded-lg shadow hover:shadow-lg transition overflow-hidden flex flex-col md:flex-row">
-    <img
-      src="https://picsum.photos/600/400?2"
-      alt="Imagen del blog"
-      class="w-full md:w-1/3 h-60 md:h-auto object-cover object-center"
-    />
-    <div class="p-6 flex flex-col justify-between">
-      <div>
-        <h3 class="text-2xl font-bold text-gray-800 mb-2">
-          Nuevo producto: Playera Oficial Jules
-        </h3>
-        <p class="text-gray-600 mb-4">
-          ¡Ya disponible la nueva merch oficial de Jules!
-        </p>
-      </div>
-      <a
-        href="/blog/playera-oficial"
-        class="inline-block text-blue-600 hover:text-blue-800 font-semibold mt-2"
-      >
-        Leer más →
-      </a>
-    </div>
-  </div>
-</div>
-
+            <!-- Card 1 -->
+            <div v-for="blog in blogs" :key="blog.id" class="bg-white rounded-lg shadow hover:shadow-lg transition overflow-hidden flex flex-col md:flex-row">
+              <img
+                :src="blog.image || 'https://picsum.photos/600/400?1'"
+                alt="blog.title"
+                class="w-full md:w-1/3 h-60 md:h-auto object-cover object-center"
+              />
+              <div class="p-6 flex flex-col justify-between">
+                <div>
+                  <h3 class="text-2xl font-bold text-gray-800 mb-2">
+                    {{ blog.title }}
+                  </h3>
+                  <p class="text-gray-600 mb-4">
+                    {{blog.excerpt}}
+                  </p>
+                </div>
+                <Link
+                  :href="'/blog/${blog.slug}'"
+                  class="inline-block text-blue-600 hover:text-blue-800 font-semibold mt-2"
+                >
+                  Leer más →
+              </Link>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </main>
@@ -79,7 +53,20 @@
 </template>
 
 <script setup>
+import {ref, onMounted} from 'vue';
 import { Link } from '@inertiajs/vue3';
 import NavigationTop from '@/Components/NavigationTop.vue';
 import Carrusel from '@/Components/Carrusel.vue';
+
+const blogs = ref([]);
+
+onMounted(async () => {
+  try{
+    const response = await fetch('/api/blogs');
+    if(!response.ok) throw new Error('error al cargar blogs');
+    blogs.value = await response.json();
+  }catch(error){
+    console.error('Error cargando blogs:', error);
+  }
+})
 </script>

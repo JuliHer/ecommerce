@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\TourDate;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -11,5 +12,9 @@ class TourController extends Controller
         return Inertia::render('Tour', [
             'title' => "Proximas fechas"
         ]);
+    }
+
+    public function venues(){
+        return TourDate::all();
     }
 }
