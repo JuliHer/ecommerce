@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Tax extends Model
 {
     use HasFactory;
-    protected $fillable = ['name', 'percentage', 'description'];
+    protected $fillable = ['name', 'porcentage', 'description'];
 
     public function products() { return $this->hasMany(Product::class); }
 }

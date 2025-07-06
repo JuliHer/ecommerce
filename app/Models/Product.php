@@ -18,4 +18,5 @@ class Product extends Model
     public function tax()       { return $this->belongsTo(Tax::class); }
     public function variants()  { return $this->hasMany(Variant::class); }
     public function discounts() { return $this->hasMany(Discount::class); }
+    public function images()  { return $this->hasMany(Image::class); }
 }
